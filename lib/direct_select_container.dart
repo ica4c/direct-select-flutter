@@ -70,14 +70,13 @@ class DirectSelectContainer extends StatefulWidget {
 
   //How fast list is scrolled
   final int dragSpeedMultiplier;
-
-  final Decoration decortion;
+  final Decoration decoration;
 
   const DirectSelectContainer({
     Key key,
     this.child,
     this.dragSpeedMultiplier = 2,
-    this.decortion,
+    this.decoration,
   }) : super(key: key);
 
   @override
@@ -92,7 +91,7 @@ class DirectSelectContainer extends StatefulWidget {
           "A DirectSelectList must inherit a DirectSelectContainer!");
     }
     return (context.inheritFromWidgetOfExactType(_InheritedContainerListeners)
-    as _InheritedContainerListeners)
+            as _InheritedContainerListeners)
         .listeners;
   }
 }
@@ -104,7 +103,7 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
 
   ScrollController _scrollController;
   DirectSelectList _currentList =
-  DirectSelectList(itemBuilder: (val) => null, values: []);
+      DirectSelectList(itemBuilder: (val) => null, values: []);
   double _currentScrollLocation = 0;
 
   double _adjustedTopOffset = 0.0;
@@ -185,12 +184,12 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
     }
 
     Decoration dslContainerDecoration;
-    if (widget.decortion == null) {
+    if (widget.decoration == null) {
       final theme = Theme.of(context);
       dslContainerDecoration =
           BoxDecoration(color: theme.scaffoldBackgroundColor);
     } else {
-      dslContainerDecoration = widget.decortion;
+      dslContainerDecoration = widget.decoration;
     }
     return Container(
         decoration: dslContainerDecoration,
@@ -267,12 +266,12 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
   void _performScaleTransformation(double scrollPixels, int selectedItemIndex) {
     final neighbourDistance = _getNeighbourListElementDistance(scrollPixels);
     int neighbourIncrementDirection =
-    neighbourScrollDirection(neighbourDistance);
+        neighbourScrollDirection(neighbourDistance);
 
     int neighbourIndex = lastSelectedItem + neighbourIncrementDirection;
 
     double neighbourDistanceToCurrentItem =
-    _getNeighbourListElementDistanceToCurrentItem(neighbourDistance);
+        _getNeighbourListElementDistanceToCurrentItem(neighbourDistance);
 
     if (neighbourIndex < 0 || neighbourIndex > _currentList.items.length - 1) {
       //incorrect neighbour index quit
@@ -326,13 +325,13 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
 
   double _getNeighbourListElementDistance(double scrollPixels) {
     double selectedElementDeviation =
-    (scrollPixels / _currentList.itemHeight());
+        (scrollPixels / _currentList.itemHeight());
     int selectedElement = _getCurrentListElementIndex(scrollPixels);
     return selectedElementDeviation - selectedElement;
   }
 
-  Future toggleListOverlayVisibility(DirectSelectList visibleList,
-      double location) async {
+  Future toggleListOverlayVisibility(
+      DirectSelectList visibleList, double location) async {
     if (isOverlayVisible) {
       try {
         await _scrollController.animateTo(
