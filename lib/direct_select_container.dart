@@ -191,8 +191,17 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
     } else {
       dslContainerDecoration = widget.decoration;
     }
+
+    RenderObject object = context.findRenderObject();
+    double containerWidth = double.maxFinite;
+
+    if (object != null) {
+      containerWidth = object.paintBounds.width;
+    }
+
     return Container(
         decoration: dslContainerDecoration,
+        width: containerWidth,
         child: ListView.builder(
           padding: EdgeInsets.only(left: paddingLeft),
           controller: _scrollController,
