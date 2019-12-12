@@ -131,6 +131,19 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
   Widget build(BuildContext context) {
     double topOffset = 0.0;
     RenderObject object = context.findRenderObject();
+
+    if (object != null) {
+      AbstractNode parent = object.parent;
+
+      do {
+        if (parent is RenderObject && parent.parentData is BoxParentData) {
+          topOffset += (parent.parentData as BoxParentData).offset.dy;
+        }
+
+        parent = parent?.parent;
+      } while (parent != null);
+    }
+
     if (object?.parentData is ContainerBoxParentData) {
       topOffset = (object.parentData as ContainerBoxParentData).offset.dy;
     }
