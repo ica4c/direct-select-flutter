@@ -281,15 +281,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             showDialog(
                               context: context,
                               builder: (context) => Dialog(
-                                child: SizedBox(
-                                  height: 250,
+                                child: Container(
+                                  height: 300,
                                   child: DirectSelectContainer(
                                     decoration: BoxDecoration(
-                                      color: Colors.transparent,
+                                      color: Colors.white,
                                     ),
-                                    child: Padding(
+                                    child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
+                                        vertical: 20,
                                       ),
                                       child: MealSelector(
                                         data: _meals,
