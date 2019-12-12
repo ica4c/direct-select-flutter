@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:direct_select_flutter/direct_select_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -131,6 +132,22 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
   Widget build(BuildContext context) {
     double topOffset = 0.0;
     RenderObject object = context.findRenderObject();
+
+    if (object != null) {
+      AbstractNode parent = object.parent;
+      BoxParentData parentData;
+
+      do {
+        if (parent is RenderObject && parent.parentData is BoxParentData) {
+          parentData = parent.parentData as BoxParentData;
+
+          topOffset += parentData.offset.dy;
+        }
+
+        parent = parent?.parent;
+      } while (parent != null);
+    }
+
     if (object?.parentData is ContainerBoxParentData) {
       topOffset = (object.parentData as ContainerBoxParentData).offset.dy;
     }
@@ -174,6 +191,7 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
 
   Widget _getListWidget() {
     var paddingLeft = 0.0;
+    var leftOffset = 0.0;
 
     if (_currentList.items.isNotEmpty) {
       Rect rect = RectGetter.getRectFromKey(
@@ -181,6 +199,25 @@ class DirectSelectContainerState extends State<DirectSelectContainer>
       if (rect != null) {
         paddingLeft = rect.left;
       }
+
+      var object = context.findRenderObject();
+
+      if (object != null) {
+        AbstractNode parent = object.parent;
+        BoxParentData parentData;
+
+        do {
+          if (parent is RenderObject && parent.parentData is BoxParentData) {
+            parentData = parent.parentData as BoxParentData;
+
+            leftOffset += parentData.offset.dx;
+          }
+
+          parent = parent?.parent;
+        } while (parent != null);
+      }
+
+      paddingLeft -= leftOffset;
     }
 
     Decoration dslContainerDecoration;
